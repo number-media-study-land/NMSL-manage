@@ -33,7 +33,7 @@ export default {
       let data = await axios.post(login.url, params);
       data = data.data;
       if (data.code === 0) {
-        this.$router.push({ path: '/manage' })
+        this.$router.push({ path: "/manage" });
       } else {
         this.$message.error(`错误：${data.msg}`);
       }

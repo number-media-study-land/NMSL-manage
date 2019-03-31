@@ -7,6 +7,7 @@
 <script>
 import "./style/globalStyle.less";
 import "./style/clear.less";
+import "./style/UIchange.less";
 
 export default {
   name: "app",
