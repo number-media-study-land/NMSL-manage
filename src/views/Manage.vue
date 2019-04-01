@@ -2,10 +2,8 @@
   <div class="manage">
     <el-container>
       <el-header>
-        <router-link :to="{ path: '/manage' }">
-          <img class="logo" src="@/assets/logo.svg" alt>
-          <h3>数字媒体在线学习平台-后台管理系统</h3>
-        </router-link>
+        <img class="logo" src="@/assets/logo.svg" alt>
+        <h3>数字媒体在线学习平台-后台管理系统</h3>
       </el-header>
       <el-container>
         <el-aside width="200px">
@@ -40,6 +38,7 @@ export default {
   .el-header {
     position: relative;
     border-bottom: 1px solid #e6e6e6;
+    cursor: default;
     .logo {
       position: absolute;
       top: 0;

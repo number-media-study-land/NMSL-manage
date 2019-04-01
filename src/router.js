@@ -3,6 +3,9 @@ import Router from "vue-router";
 import LogIn from "./views/login_reg/LogIn.vue";
 import Manage from "./views/Manage.vue";
 import Home from "./views/home/Home.vue";
+import User from "./views/user/User.vue";
+import Courses from "./views/courses/Courses.vue";
+import CourseVideos from "./views/courseVideos/CourseVideos.vue";
 
 Vue.use(Router);
 
@@ -22,8 +25,23 @@ export default new Router({
       children: [
         {
           path: "",
-          name: "home",
+          name: "m_home",
           component: Home
+        },
+        {
+          path: "user",
+          name: "m_user",
+          component: User
+        },
+        {
+          path: "courses",
+          name: "m_courses",
+          component: Courses
+        },
+        {
+          path: "courseVideos",
+          name: "m_courseVideos",
+          component: CourseVideos
         }
       ]
     }
