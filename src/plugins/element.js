@@ -15,7 +15,11 @@ import {
   TableColumn,
   Pagination,
   Dialog,
-  Loading
+  Loading,
+  Select,
+  Option,
+  Form,
+  FormItem
 } from "element-ui";
 
 Vue.use(Input);
@@ -33,4 +37,8 @@ Vue.use(TableColumn);
 Vue.use(Pagination);
 Vue.use(Dialog);
 Vue.use(Loading);
+Vue.use(Select);
+Vue.use(Option);
+Vue.use(Form);
+Vue.use(FormItem);
 Vue.prototype.$message = Message;

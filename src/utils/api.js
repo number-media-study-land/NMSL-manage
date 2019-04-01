@@ -4,7 +4,12 @@ export const login = {
 
 export const user = {
   getUserList: "/manage/user/getUserList",
+  searchUser: "/manage/user/searchUser",
   getUserStudyList: "/userStudy/userStudyList"
+};
+
+export const courses = {
+  getCourseList: "/course/courseList"
 };
 
 export const mm = {
