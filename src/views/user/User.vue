@@ -70,7 +70,7 @@ export default {
         page: 1,
         pageItem: 20
       },
-      totalPage: 1,
+      totalPage: 10,
       tableData: [],
       studyList: [],
       loading: true,
@@ -87,7 +87,7 @@ export default {
       let data = await axios.get(user.getUserList, { params: { ...pageInfo } });
       data = data.data;
       if (data.code === 0) {
-        this.totalPage = data.data.totalPage;
+        this.totalPage = data.data.totalPage * 10;
         this.tableData = data.data.list;
       }
     },
@@ -121,7 +121,7 @@ export default {
             page: data.page,
             pageItem: data.pageItem
           };
-          this.totalPage = data.totalPage;
+          this.totalPage = data.totalPage * 10;
 
           let result;
           if (

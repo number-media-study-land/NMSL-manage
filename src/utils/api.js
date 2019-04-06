@@ -13,7 +13,10 @@ export const courses = {
   getCourseDetail: "/course/courseDetail"
 };
 
-export const mm = {
-  addCourse: "/manage/course/addCourse",
+export const courseDetail = {
+  addCourse: "/manage/course/addCourse"
+};
+
+export const courseVideoDetail = {
   addCourseVideo: "/manage/course/addCourseVideo"
 };

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import {
   Input,
+  InputNumber,
   Button,
   Message,
   Menu,
@@ -23,6 +24,7 @@ import {
 } from "element-ui";
 
 Vue.use(Input);
+Vue.use(InputNumber);
 Vue.use(Button);
 Vue.use(Menu);
 Vue.use(Submenu);

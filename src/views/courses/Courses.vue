@@ -49,7 +49,7 @@ export default {
         page: 1,
         pageItem: 20
       },
-      totalPage: 1,
+      totalPage: 10,
       tableData: [],
       loading: true,
       formInline: {
@@ -71,7 +71,7 @@ export default {
       });
       data = data.data;
       if (data.code === 0) {
-        this.totalPage = data.data.totalPage;
+        this.totalPage = data.data.totalPage * 10;
         this.tableData = data.data.list;
         this.loading = false;
       }

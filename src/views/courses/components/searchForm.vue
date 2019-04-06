@@ -1,6 +1,6 @@
 <template>
   <div class="searchForm">
-    <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+    <el-form :inline="true" :model="formInline" ref="formInline">
       <el-form-item label="id" prop="id">
         <el-input v-model="formInline.id"></el-input>
       </el-form-item>
