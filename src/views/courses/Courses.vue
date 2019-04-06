@@ -1,8 +1,11 @@
 <template>
-  <div class="user">
+  <div class="courses">
     <h2>课程信息</h2>
     <div class="searchArea">
-      <search-form />
+      <search-form @beforeSearch="beforeSearch"/>
+    </div>
+    <div class="addNewCourseArea">
+      <el-button type="success" plain @click="toStudyList()">添加新课程</el-button>
     </div>
     <div class="tableArea">
       <el-table v-loading="loading" :data="tableData" border style="width: 100%">
@@ -11,14 +14,14 @@
         <el-table-column prop="type" label="课程类型"></el-table-column>
         <el-table-column prop="level" label="课程难度"></el-table-column>
         <el-table-column prop="time" label="学习时间 /小时"></el-table-column>
-        <el-table-column fixed="right" label="是否添加视频课程" width="150">
+        <el-table-column fixed="right" label="是否添加课程视频" width="150">
           <template slot-scope="scope">
             <span>{{scope.row.videos ? "是" : "否"}}</span>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="详情" width="100">
           <template slot-scope="scope">
-            <el-button @click="lookStudyList(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="toStudyList(scope.row)" type="text" size="small">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -33,18 +36,18 @@
 import axios from "@/utils/axios";
 import { courses } from "@/utils/api";
 
-import SearchForm from "./components/searchForm"
+import SearchForm from "./components/searchForm";
 
 export default {
-  name: "user",
-  components:{
+  name: "courses",
+  components: {
     SearchForm
   },
   data() {
     return {
       pageInfo: {
         page: 1,
-        pageItem: 20,
+        pageItem: 20
       },
       totalPage: 1,
       tableData: [],
@@ -56,9 +59,16 @@ export default {
     };
   },
   methods: {
+    // 搜索前处理
+    beforeSearch(params) {
+      this.pageInfo = { page: 1, pageItem: 20, ...params };
+      this.getUserList(this.pageInfo);
+    },
     // 获取课程列表
     async getUserList(pageInfo) {
-      let data = await axios.get(courses.getCourseList, { params: { ...pageInfo } });
+      let data = await axios.get(courses.getCourseList, {
+        params: { ...pageInfo }
+      });
       data = data.data;
       if (data.code === 0) {
         this.totalPage = data.data.totalPage;
@@ -66,6 +76,14 @@ export default {
         this.loading = false;
       }
     },
+    // 进入课程详情 / 添加课程
+    toStudyList(row) {
+      let query = {};
+      if (row) {
+        query = { _id: row._id };
+      }
+      this.$router.push({ path: `/manage/courseDetail`, query });
+    }
   },
   mounted() {
     this.getUserList(this.pageInfo);
@@ -74,11 +92,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user {
+.courses {
   padding: 5px;
   .searchArea {
     float: right;
     margin: 20px 0;
+  }
+  .addNewCourseArea {
+    text-align: right;
   }
   h2 {
     font-size: 20px;

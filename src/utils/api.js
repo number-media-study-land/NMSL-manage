@@ -9,7 +9,8 @@ export const user = {
 };
 
 export const courses = {
-  getCourseList: "/course/courseList"
+  getCourseList: "/course/courseList",
+  getCourseDetail: "/course/courseDetail"
 };
 
 export const mm = {

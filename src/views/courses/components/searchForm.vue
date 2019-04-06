@@ -1,25 +1,31 @@
 <template>
   <div class="searchForm">
     <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-      <el-form-item
-        prop="searchType"
-        :rules="[
-        { required: true, message: '请选择一个搜索类型'}
-      ]"
-      >
-        <el-select class="searchType" v-model="formInline.searchType" placeholder="搜索类型">
-          <el-option label="id" value="_id"></el-option>
-          <el-option label="姓名" value="name"></el-option>
-          <el-option label="邮箱" value="email"></el-option>
+      <el-form-item label="id" prop="id">
+        <el-input v-model="formInline.id"></el-input>
+      </el-form-item>
+      <el-form-item label="课程名" prop="name">
+        <el-input v-model="formInline.name"></el-input>
+      </el-form-item>
+      <el-form-item label="课程类型" prop="type">
+        <el-select class="searchSelect" v-model="formInline.type">
+          <el-option label="图像处理" value="图像处理"></el-option>
+          <el-option label="音频处理" value="音频处理"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item
-        prop="searchVal"
-        :rules="[
-        { required: true, message: '搜索值不能为空'}
-      ]"
-      >
-        <el-input class="searchInput" v-model="formInline.searchVal" placeholder="搜索值"></el-input>
+      <el-form-item label="课程难度" prop="level">
+        <el-select class="searchSelect" v-model="formInline.level">
+          <el-option label="入门" value="入门"></el-option>
+          <el-option label="初级" value="初级"></el-option>
+          <el-option label="中级" value="中级"></el-option>
+          <el-option label="高级" value="高级"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="是否添加课程视频" prop="videos">
+        <el-select class="searchSelect" v-model="formInline.videos">
+          <el-option label="是" :value="true"></el-option>
+          <el-option label="否" :value="false"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch('formInline')">搜索</el-button>
@@ -35,17 +41,31 @@ export default {
   data() {
     return {
       formInline: {
-        searchVal: "",
-        searchType: ""
+        id: "",
+        name: "",
+        type: "",
+        level: "",
+        videos: null
       }
     };
   },
   methods: {
+    // 转化搜索参数
+    switchSearchParams() {
+      let params = {};
+      for (let key in this.formInline) {
+        if (this.formInline[key] !== "" && this.formInline[key] !== null) {
+          params[key] = this.formInline[key];
+        }
+      }
+      return params;
+    },
     // 搜索用户
     handleSearch(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-
+          let params = this.switchSearchParams();
+          this.$emit("beforeSearch", params);
         } else {
           return false;
         }
@@ -54,17 +74,16 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
-  },
+  }
 };
 </script>
 
 <style lang="less" scoped>
 .searchForm {
-  .searchType {
+  text-align: right;
+
+  .searchSelect {
     width: 130px;
-  }
-  .searchInput {
-    width: 280px;
   }
 }
 </style>

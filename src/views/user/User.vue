@@ -68,9 +68,9 @@ export default {
     return {
       pageInfo: {
         page: 1,
-        pageItem: 20,
+        pageItem: 20
       },
-        totalPage: 1,
+      totalPage: 1,
       tableData: [],
       studyList: [],
       loading: true,
@@ -116,16 +116,18 @@ export default {
             params: { ...this.formInline }
           });
           data = data.data.data;
-          
+
           this.pageInfo = {
             page: data.page,
-            pageItem: data.pageItem,
+            pageItem: data.pageItem
           };
-          this.totalPage= data.totalPage
+          this.totalPage = data.totalPage;
 
           let result;
-          if (Object.prototype.toString.call(data.result) === '[object Array]') {
-            result = data.result
+          if (
+            Object.prototype.toString.call(data.result) === "[object Array]"
+          ) {
+            result = data.result;
           } else {
             result = data.result ? [data.result] : null;
           }

@@ -5,6 +5,7 @@ import Manage from "./views/Manage.vue";
 import Home from "./views/home/Home.vue";
 import User from "./views/user/User.vue";
 import Courses from "./views/courses/Courses.vue";
+import CoursesDetail from "./views/courses/CourseDetail.vue";
 import CourseVideos from "./views/courseVideos/CourseVideos.vue";
 
 Vue.use(Router);
@@ -37,6 +38,11 @@ export default new Router({
           path: "courses",
           name: "m_courses",
           component: Courses
+        },
+        {
+          path: "courseDetail",
+          name: "m_courseDetail",
+          component: CoursesDetail
         },
         {
           path: "courseVideos",
