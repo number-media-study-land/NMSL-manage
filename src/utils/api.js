@@ -14,7 +14,9 @@ export const courses = {
 };
 
 export const courseDetail = {
-  addCourse: "/manage/course/addCourse"
+  addCourse: "/manage/course/addCourse",
+  updateCourse: "/manage/course/updateCourse",
+  delCourse: "/manage/course/delCourse"
 };
 
 export const courseVideoDetail = {

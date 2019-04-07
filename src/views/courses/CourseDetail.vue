@@ -3,6 +3,7 @@
     <el-button type="primary" size="small" icon="el-icon-arrow-left" @click="turnBack">返回</el-button>
     <div class="courseDetailWrapper">
       <el-form
+        v-loading="loading"
         :rules="rules"
         label-position="right"
         label-width="140px"
@@ -63,12 +64,23 @@
         <el-form-item v-if="this.$route.query._id" label="是否添加课程视频：" prop="videos">
           <span>{{formInline.video ? "是" : "否"}}</span>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="this.$route.query._id">
+          <el-button type="success" @click="updateCourse('formInline')">更新课程</el-button>
+          <el-button type="danger" @click="delDialogVisible = true">删除课程</el-button>
+        </el-form-item>
+        <el-form-item v-else>
           <el-button type="primary" @click="addNewCourse('formInline')">添加课程</el-button>
           <el-button @click="resetForm('formInline')">重置内容</el-button>
         </el-form-item>
       </el-form>
     </div>
+    <el-dialog v-loading="loading" title="确定删除该课程吗" :visible.sync="delDialogVisible" width="30%">
+      <span>此操作不可逆</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="delCourse">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -88,7 +100,8 @@ export default {
       }
     };
     return {
-      loading: true,
+      loading: false,
+      delDialogVisible: false,
       formInline: {
         name: "",
         type: "",
@@ -128,11 +141,13 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    // 添加课程
     async addNewCourse(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let params = JSON.parse(JSON.stringify(this.formInline));
           delete params.videos;
+          delete params._id;
           let data = await axios.post(courseDetail.addCourse, params);
           data = data.data;
           if (data.code === 0) {
@@ -145,6 +160,43 @@ export default {
         }
       });
     },
+    // 更新课程
+    async updateCourse(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let params = JSON.parse(JSON.stringify(this.formInline));
+          delete params.videos;
+          delete params._id;
+          delete params.__v;
+
+          let data = await axios.post(courseDetail.updateCourse, params);
+          data = data.data;
+          if (data.code === 0) {
+            this.$message.success(data.msg);
+          } else {
+            this.$message.error(data.msg);
+          }
+        } else {
+          return false;
+        }
+      });
+    },
+    // 删除课程
+    async delCourse() {
+      this.loading = true;
+      let data = await axios.post(courseDetail.delCourse, {
+        _id: this.formInline._id
+      });
+      data = data.data;
+      if (data.code === 0) {
+        this.$message.success(`${data.msg}, 3秒后返回上一页`, 5);
+        setTimeout(() => {
+          this.$router.push({ path: `/manage/courses` });
+        }, 3000);
+      } else {
+        this.$message.error(data.msg);
+      }
+    },
     // 获取课程内容
     async getCourseDetail(_id) {
       let data = await axios.get(courses.getCourseDetail, {
@@ -153,11 +205,13 @@ export default {
       data = data.data;
       if (data.code === 0) {
         this.formInline = data.data;
+        this.loading = false;
       }
     }
   },
   mounted() {
     if (this.$route.query._id) {
+      this.loading = true;
       this.getCourseDetail(this.$route.query._id);
     }
   }
