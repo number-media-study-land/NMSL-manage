@@ -62,7 +62,12 @@
           <el-input class="inputStyle" placeholder="填入封面地址" v-model="formInline.cover"></el-input>
         </el-form-item>
         <el-form-item v-if="this.$route.query._id" label="是否添加课程视频：" prop="videos">
-          <span>{{formInline.video ? "是" : "否"}}</span>
+          <span>{{formInline.videos ? "是" : "否"}}</span>
+          <el-button
+            class="courseVideoBtn"
+            type="text"
+            @click="toCourseVideo"
+          >{{formInline.video ? "修改课程视频" : "添加课程视频"}}</el-button>
         </el-form-item>
         <el-form-item v-if="this.$route.query._id">
           <el-button type="success" @click="updateCourse('formInline')">更新课程</el-button>
@@ -207,6 +212,14 @@ export default {
         this.formInline = data.data;
         this.loading = false;
       }
+    },
+    // 前往课程视频
+    toCourseVideo() {
+      let query = {
+        name: this.formInline.name,
+        videos: this.formInline.videos
+      };
+      this.$router.push({ path: `/manage/courseVideos`, query });
     }
   },
   mounted() {
@@ -234,6 +247,9 @@ export default {
       border: 1px solid #dcdfe6;
       border-left: 0;
       border-radius: 5px;
+    }
+    .courseVideoBtn {
+      margin-left: 20px;
     }
   }
 }

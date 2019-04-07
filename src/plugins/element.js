@@ -3,6 +3,7 @@ import {
   Input,
   InputNumber,
   Button,
+  ButtonGroup,
   Message,
   Menu,
   Submenu,
@@ -20,12 +21,14 @@ import {
   Select,
   Option,
   Form,
-  FormItem
+  FormItem,
+  Tree
 } from "element-ui";
 
 Vue.use(Input);
 Vue.use(InputNumber);
 Vue.use(Button);
+Vue.use(ButtonGroup);
 Vue.use(Menu);
 Vue.use(Submenu);
 Vue.use(MenuItem);
@@ -43,4 +46,5 @@ Vue.use(Select);
 Vue.use(Option);
 Vue.use(Form);
 Vue.use(FormItem);
+Vue.use(Tree);
 Vue.prototype.$message = Message;
