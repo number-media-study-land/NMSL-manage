@@ -9,7 +9,7 @@ export const user = {
 };
 
 export const courses = {
-  getCourseList: "/course/courseList",
+  getCourseList: "/manage/course/courseList",
   getCourseDetail: "/course/courseDetail"
 };
 

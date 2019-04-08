@@ -95,7 +95,6 @@ export default {
 .courses {
   padding: 5px;
   .searchArea {
-    float: right;
     margin: 20px 0;
   }
   .addNewCourseArea {

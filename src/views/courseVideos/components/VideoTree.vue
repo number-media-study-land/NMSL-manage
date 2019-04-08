@@ -35,28 +35,13 @@
 </template>
 
 <script>
-let id = 3;
+let id = 1;
 
 export default {
   name: "videoTree",
   data() {
-    const data = [
-      {
-        id: 1,
-        label: "1",
-        title: "",
-        children: [
-          {
-            id: 2,
-            label: "1-1",
-            title: "",
-            src: ""
-          }
-        ]
-      }
-    ];
     return {
-      videoTreeData: JSON.parse(JSON.stringify(data))
+      videoTreeData: []
     };
   },
   methods: {
@@ -78,12 +63,74 @@ export default {
       }
       data.children.push(newChild);
     },
-
     remove(node, data) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
+    },
+    returnVideosData(name) {
+      let params = this.transVideosDataToParams(name);
+      if (typeof params === "string") {
+        this.$message.error(params);
+      } else {
+        this.$emit("postVideoData", params);
+      }
+    },
+    transVideosDataToParams(name) {
+      let videoList = [];
+
+      for (let obj of this.videoTreeData) {
+        let list = [];
+        if (obj.title === "") {
+          return "请填写章节名";
+        }
+        if (obj.children.length > 0) {
+          for (let C_obj of obj.children) {
+            if (C_obj.title !== "" && C_obj.src !== "") {
+              list.push({ title: C_obj.title.trim(), src: C_obj.src });
+            } else {
+              return "请保证每一个输入框都有内容，否则删除对应课程";
+            }
+          }
+        } else {
+          return "请保证每一章都要有课程，否则删除对应章";
+        }
+        videoList.push({
+          title: obj.title.trim(),
+          list
+        });
+      }
+
+      let params = {
+        name,
+        videoList
+      };
+      return params;
+    }
+  },
+  mounted() {
+    if (
+      this.$route.query.videos === false ||
+      this.$route.query.videos === "false"
+    ) {
+      id = 3;
+      const data = [
+        {
+          id: 1,
+          label: "1",
+          title: "",
+          children: [
+            {
+              id: 2,
+              label: "1-1",
+              title: "",
+              src: ""
+            }
+          ]
+        }
+      ];
+      this.videoTreeData = JSON.parse(JSON.stringify(data));
     }
   }
 };
