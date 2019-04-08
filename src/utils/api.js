@@ -10,7 +10,8 @@ export const user = {
 
 export const courses = {
   getCourseList: "/manage/course/courseList",
-  getCourseDetail: "/course/courseDetail"
+  getCourseDetail: "/course/courseDetail",
+  getCourseVideo: "/course/courseVideoList"
 };
 
 export const courseDetail = {
@@ -20,5 +21,6 @@ export const courseDetail = {
 };
 
 export const courseVideoDetail = {
-  addCourseVideo: "/manage/course/addCourseVideo"
+  addCourseVideo: "/manage/course/addCourseVideo",
+  updateCourseVideo: "/manage/course/updateCourseVideo"
 };

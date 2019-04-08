@@ -35,8 +35,10 @@
 </template>
 
 <script>
-let id = 1;
+import axios from "@/utils/axios";
+import { courses } from "@/utils/api";
 
+let id = 1;
 export default {
   name: "videoTree",
   data() {
@@ -45,6 +47,7 @@ export default {
     };
   },
   methods: {
+    // 添加章节
     appendCap() {
       let label = (Number(this.videoTreeData.length) + 1).toString();
       const newChild = {
@@ -55,6 +58,7 @@ export default {
       };
       this.videoTreeData.push(newChild);
     },
+    // 插入行
     append(data) {
       let labelVal = `${data.label}-${Number(data.children.length) + 1}`;
       const newChild = { id: id++, label: labelVal, title: "", src: "" };
@@ -63,12 +67,14 @@ export default {
       }
       data.children.push(newChild);
     },
+    // 删除行
     remove(node, data) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
     },
+    // 把值反给父组件
     returnVideosData(name) {
       let params = this.transVideosDataToParams(name);
       if (typeof params === "string") {
@@ -77,6 +83,7 @@ export default {
         this.$emit("postVideoData", params);
       }
     },
+    // 把tree的值转换成接口需要的格式
     transVideosDataToParams(name) {
       let videoList = [];
 
@@ -107,6 +114,55 @@ export default {
         videoList
       };
       return params;
+    },
+    // 获取视频内容
+    async getVideoData() {
+      let data = await axios.get(courses.getCourseVideo, {
+        params: {
+          _id: this.$route.query._id
+        }
+      });
+      data = data.data;
+      if (data.code === 0) {
+        this.transParamsToVideosData(data.data.videoList);
+      } else {
+        this.$message.error({
+          message: `错误：${data.msg}`,
+          duration: 7000
+        });
+      }
+    },
+    // 把接口返回的值转换成tree需要的格式
+    transParamsToVideosData(arr) {
+      let data = [];
+
+      let newid = 0;
+      let o_label = 0;
+      for (let obj of arr) {
+        let children = [];
+
+        o_label += 1;
+        let o_id = ++newid;
+        let C_label = 0;
+        if (obj.list) {
+          for (const C_obj of obj.list) {
+            children.push({
+              id: ++newid,
+              label: `${o_label}-${++C_label}`,
+              title: C_obj.title,
+              src: C_obj.src
+            });
+          }
+        }
+        data.push({
+          id: o_id,
+          label: o_label.toString(),
+          title: obj.title,
+          children
+        });
+      }
+      id = ++newid;
+      this.videoTreeData = JSON.parse(JSON.stringify(data));
     }
   },
   mounted() {
@@ -131,6 +187,8 @@ export default {
         }
       ];
       this.videoTreeData = JSON.parse(JSON.stringify(data));
+    } else {
+      this.getVideoData();
     }
   }
 };

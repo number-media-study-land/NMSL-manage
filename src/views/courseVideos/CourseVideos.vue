@@ -9,7 +9,11 @@
       <p class="formItem">课程每章节视频：</p>
       <video-tree ref="videoTree" @postVideoData="postVideoData"/>
       <div class="formBtn formItem">
-        <el-button v-if="videos===true || videos==='true'" type="success" @click="getVideosData()">更新</el-button>
+        <el-button
+          v-if="videos===true || videos==='true'"
+          type="success"
+          @click="getVideosData()"
+        >更新</el-button>
         <el-button v-else type="primary" @click="getVideosData()">提交</el-button>
       </div>
     </div>
@@ -46,7 +50,13 @@ export default {
     },
     // 提交视频数据
     async postVideoData(params) {
-      let data = await axios.post(courseVideoDetail.addCourseVideo, params);
+      let url;
+      if (this.videos === false || this.videos === "false") {
+        url = courseVideoDetail.addCourseVideo;
+      } else {
+        url = courseVideoDetail.updateCourseVideo;
+      }
+      let data = await axios.post(url, params);
       data = data.data;
       if (data.code === 0) {
         this.$message.success(data.msg);

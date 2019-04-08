@@ -216,6 +216,7 @@ export default {
     // 前往课程视频
     toCourseVideo() {
       let query = {
+        _id: this.formInline._id,
         name: this.formInline.name,
         videos: this.formInline.videos
       };
