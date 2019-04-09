@@ -53,7 +53,7 @@
       </el-table>
     </el-dialog>
     <div class="pagination">
-      <el-pagination layout="prev, pager, next" :total="totalPage"></el-pagination>
+      <el-pagination layout="prev, pager, next" :total="totalPage" @current-change="changePage"></el-pagination>
     </div>
   </div>
 </template>
@@ -113,14 +113,10 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let data = await axios.get(user.searchUser, {
-            params: { ...this.formInline }
+            params: { ...this.pageInfo, ...this.formInline }
           });
           data = data.data.data;
 
-          this.pageInfo = {
-            page: data.page,
-            pageItem: data.pageItem
-          };
           this.totalPage = data.totalPage * 10;
 
           let result;
@@ -139,6 +135,18 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    // 分页
+    changePage(nowPage) {
+      this.pageInfo.page = nowPage;
+      if (
+        this.formInline.searchVal !== "" &&
+        this.formInline.searchType !== ""
+      ) {
+        this.handleSearch("formInline");
+      } else {
+        this.getUserList(this.pageInfo);
+      }
     }
   },
   mounted() {

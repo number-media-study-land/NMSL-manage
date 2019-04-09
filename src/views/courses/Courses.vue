@@ -27,7 +27,7 @@
       </el-table>
     </div>
     <div class="pagination">
-      <el-pagination layout="prev, pager, next" :total="totalPage"></el-pagination>
+      <el-pagination layout="prev, pager, next" :total="totalPage" @current-change="changePage"></el-pagination>
     </div>
   </div>
 </template>
@@ -62,10 +62,10 @@ export default {
     // 搜索前处理
     beforeSearch(params) {
       this.pageInfo = { page: 1, pageItem: 20, ...params };
-      this.getUserList(this.pageInfo);
+      this.getCourseList(this.pageInfo);
     },
     // 获取课程列表
-    async getUserList(pageInfo) {
+    async getCourseList(pageInfo) {
       let data = await axios.get(courses.getCourseList, {
         params: { ...pageInfo }
       });
@@ -83,10 +83,15 @@ export default {
         query = { _id: row._id };
       }
       this.$router.push({ path: `/manage/courseDetail`, query });
+    },
+    // 分页
+    changePage(nowPage) {
+      this.pageInfo.page = nowPage;
+      this.getCourseList(this.pageInfo);
     }
   },
   mounted() {
-    this.getUserList(this.pageInfo);
+    this.getCourseList(this.pageInfo);
   }
 };
 </script>
