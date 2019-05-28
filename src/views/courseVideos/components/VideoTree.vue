@@ -20,6 +20,15 @@
           class="treeInput"
           placeholder="请输入视频地址"
         ></el-input>
+        <el-input
+          v-if="data.src !== undefined"
+          type="textarea"
+          autosize
+          size="mini"
+          class="treeQAInput"
+          placeholder="如果需要，可在此处输入本节问题"
+          v-model="data.qa">
+        </el-input>
         <span class="treeBtn">
           <el-button
             v-if="data.src === undefined"
@@ -43,7 +52,8 @@ export default {
   name: "videoTree",
   data() {
     return {
-      videoTreeData: []
+      videoTreeData: [],
+      dialogVisible: false
     };
   },
   methods: {
@@ -61,7 +71,13 @@ export default {
     // 插入行
     append(data) {
       let labelVal = `${data.label}-${Number(data.children.length) + 1}`;
-      const newChild = { id: id++, label: labelVal, title: "", src: "" };
+      const newChild = {
+        id: id++,
+        label: labelVal,
+        title: "",
+        src: "",
+        qa: ""
+      };
       if (!data.children) {
         this.$set(data, "children", []);
       }
@@ -95,7 +111,11 @@ export default {
         if (obj.children.length > 0) {
           for (let C_obj of obj.children) {
             if (C_obj.title !== "" && C_obj.src !== "") {
-              list.push({ title: C_obj.title.trim(), src: C_obj.src });
+              list.push({
+                title: C_obj.title.trim(),
+                src: C_obj.src,
+                qa: C_obj.qa
+              });
             } else {
               return "请保证每一个输入框都有内容，否则删除对应课程";
             }
@@ -150,7 +170,8 @@ export default {
               id: ++newid,
               label: `${o_label}-${++C_label}`,
               title: C_obj.title,
-              src: C_obj.src
+              src: C_obj.src,
+              qa: C_obj.qa
             });
           }
         }
@@ -181,7 +202,8 @@ export default {
               id: 2,
               label: "1-1",
               title: "",
-              src: ""
+              src: "",
+              qa: ""
             }
           ]
         }
@@ -212,8 +234,15 @@ export default {
         float: right;
         margin-right: 10px;
       }
+      .treeQAbtn {
+        margin-left: 10px;
+      }
       .treeInput {
         width: 20%;
+        margin-left: 10px;
+      }
+      .treeQAInput {
+        width: 40%;
         margin-left: 10px;
       }
     }
